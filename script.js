@@ -1,6 +1,6 @@
 
 var ts = new Date().getTime();
-var hash = CryptoJS.MD5(ts + process.env.PRIV_KEY + process.env.PUBLIC_KEY).toString();
+var hash = CryptoJS.MD5(ts + PRIV_KEY + PUBLIC_KEY).toString();
 const tbody = document.getElementById("pote");
 const loading = document.getElementById("loading");
 var limit = 20
