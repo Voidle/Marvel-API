@@ -34,3 +34,8 @@ input[type=submit], input[type=reset]{
     float:right;
     display: inline-block;
 }
+
+#cites{
+    color: whitesmoke;
+    text-align: center;
+}
