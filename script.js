@@ -1,13 +1,12 @@
-
 var ts = new Date().getTime();
 var hash = CryptoJS.MD5(ts + PRIV_KEY + PUBLIC_KEY).toString();
 const tbody = document.getElementById("pote");
 const loading = document.getElementById("loading");
-var limit = 20
+var limit = 10
 var offset = 0 
+var total;
 var name;
 var nameStartsWith;
-
 
 var url =
   `http://gateway.marvel.com:80/v1/public/characters?ts=${ts}&apikey=${PUBLIC_KEY}&hash=${hash}&limit=${limit}`;
@@ -24,20 +23,31 @@ $('.scroll-top').click(function () {
   return false;
 });
 
-$(window).scroll(function() {
-                    
+$(window).scroll(function() {                    
   if($(window).scrollTop() == $(document).height() - $(window).height()) {
     name = document.getElementById('name').value;
     nameStartsWith = document.getElementById('nameStartsWith').value;
-    console.log(name, nameStartsWith);
-    if(name === '' && nameStartsWith === ''){
-      // ajax call get data from server and append to the div
-      console.log(typeof offset, typeof limit);
-      offset+=limit;
-     //  console.log(offset);
-      var lurl = `${url}&offset=${offset}`;         
-      getData(lurl, true);
-    }         
+    var lurl;
+    // console.log(name, nameStartsWith);
+    offset+=limit;
+
+    if(offset<total){
+      if(name === '' && nameStartsWith !==''){      
+        // offset+=limit;
+        lurl = `${url}&nameStartsWith=${nameStartsWith}&offset=${offset}`; 
+      }else if(name !== '' && nameStartsWith=== ''){
+        // offset+=limit;
+        lurl = `${url}&name=${name}&offset=${offset}`;
+      }else if(name !== '' && nameStartsWith !== ''){
+        // offset+=limit;
+        lurl = `${url}&name=${name}&nameStartsWith=${nameStartsWith}&offset=${offset}`;
+      }else{
+        // offset+=limit;
+        lurl = `${url}&offset=${offset}`;
+      }
+      
+      getData(lurl, true);  
+    }             
   }
 });
 
@@ -48,7 +58,8 @@ function  func() {
   var lurl;
   // console.log(name,nameStartsWith);
   // console.log(window.url);
-  
+  offset=0;
+
   if(name === '' && nameStartsWith !==''){
     lurl = `${url}&nameStartsWith=${nameStartsWith}`;
   }else if(name !== '' && nameStartsWith=== ''){
@@ -65,10 +76,11 @@ function  func() {
 
 function getoff(){
   var lurl;
-   offset = parseInt(document.getElementById('offnum').value);
+  
+  offset = parseInt(document.getElementById('offnum').value);
   // console.log(offnum);
   // offset = offnum;
-  console.log(offset)
+  // console.log(offset)
   lurl = `${url}&offset=${offset}`;
   
   getData(lurl);
@@ -87,6 +99,8 @@ async function getData(url, x=false) {
   loading.style.display = "none";
   console.log(data.data);
   const op = data.data.results;
+  total = data.data.total;
+  // console.log(total);
   op.forEach((curr_op) => {
     const id = curr_op.id;
     const name = curr_op.name;

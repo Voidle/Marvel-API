@@ -39,3 +39,16 @@ input[type=submit], input[type=reset]{
     color: whitesmoke;
     text-align: center;
 }
+
+.parent {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .child {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
